@@ -1,0 +1,40 @@
+{
+  "info": {
+    "name": "API Gestion des Stages",
+    "description": "Collection de tests. Modifier la variable baseUrl (local : http://localhost:8000, cloud : URL Render).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8000" },
+    { "key": "stageId", "value": "1" }
+  ],
+  "item": [
+    { "name": "0 - Health", "request": { "method": "GET", "url": "{{baseUrl}}/health" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('200 OK', () => pm.response.to.have.status(200));"] } }] },
+    { "name": "1 - Créer un stage (POST)",
+      "request": { "method": "POST", "url": "{{baseUrl}}/stages",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"nom_etudiant\": \"Etudiant Fictif\",\n  \"entreprise\": \"Société Exemple\",\n  \"intitule\": \"Développement d'une API REST\",\n  \"date_debut\": \"2026-02-01\",\n  \"date_fin\": \"2026-07-31\"\n}" } },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('201 Created', () => pm.response.to.have.status(201));",
+        "pm.collectionVariables.set('stageId', pm.response.json().id);"] } }] },
+    { "name": "2 - Lister les stages (GET)", "request": { "method": "GET", "url": "{{baseUrl}}/stages" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('200 OK', () => pm.response.to.have.status(200));"] } }] },
+    { "name": "3 - Consulter un stage (GET)", "request": { "method": "GET", "url": "{{baseUrl}}/stages/{{stageId}}" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('200 OK', () => pm.response.to.have.status(200));"] } }] },
+    { "name": "4 - Modifier un stage (PUT)",
+      "request": { "method": "PUT", "url": "{{baseUrl}}/stages/{{stageId}}",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"nom_etudiant\": \"Etudiant Fictif\",\n  \"entreprise\": \"Société Exemple\",\n  \"intitule\": \"Stage DevOps & Cloud\",\n  \"date_debut\": \"2026-02-01\",\n  \"date_fin\": \"2026-08-31\"\n}" } },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('200 OK', () => pm.response.to.have.status(200));"] } }] },
+    { "name": "5 - Supprimer un stage (DELETE)", "request": { "method": "DELETE", "url": "{{baseUrl}}/stages/{{stageId}}" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('204 No Content', () => pm.response.to.have.status(204));"] } }] },
+    { "name": "6 - Stage inexistant (404)", "request": { "method": "GET", "url": "{{baseUrl}}/stages/99999" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('404 Not Found', () => pm.response.to.have.status(404));"] } }] },
+    { "name": "7 - Dates invalides (422)",
+      "request": { "method": "POST", "url": "{{baseUrl}}/stages",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"nom_etudiant\": \"Etudiant Fictif\",\n  \"entreprise\": \"Société Exemple\",\n  \"intitule\": \"Test\",\n  \"date_debut\": \"2026-07-01\",\n  \"date_fin\": \"2026-01-01\"\n}" } },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('422', () => pm.response.to.have.status(422));"] } }] }
+  ]
+}

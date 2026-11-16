@@ -1,0 +1,9 @@
+# Blueprint Render (optionnel) : permet de créer le service via "New > Blueprint"
+services:
+  - type: web
+    name: api-gestion-stages
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
