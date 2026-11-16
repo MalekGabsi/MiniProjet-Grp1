@@ -5,8 +5,8 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class StageBase(BaseModel):
-    nom_etudiant: str = Field(..., min_length=1, max_length=100, examples=["Ahmed Ben Salah"])
-    entreprise: str = Field(..., min_length=1, max_length=100, examples=["Sopra Steria"])
+    nom_etudiant: str = Field(..., min_length=1, max_length=100, examples=["Etudiant Fictif"])
+    entreprise: str = Field(..., min_length=1, max_length=100, examples=["Entreprise Fictive"])
     intitule: str = Field(..., min_length=1, max_length=200, examples=["Développement d'une API REST"])
     date_debut: date = Field(..., examples=["2026-02-01"])
     date_fin: date = Field(..., examples=["2026-07-31"])

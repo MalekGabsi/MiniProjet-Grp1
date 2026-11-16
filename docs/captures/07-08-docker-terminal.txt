@@ -1,0 +1,20 @@
+$ docker build -t api-stages .
+
+#11 exporting to image
+#11 exporting layers 0.0s done
+#11 writing image sha256:7226a0328c49596400eb472a2c015bfc2b9c7a0cb29e6668467f3b8afe4ded97 done
+#11 naming to docker.io/library/api-stages done
+#11 DONE 0.1s
+
+$ docker run -d --name api-stages -p 8000:8000 api-stages
+1682345a3cc5a31efdd2d2c68d3d517efbcae0175d5e6f77780ff3679db76e7d
+
+$ docker ps
+CONTAINER ID   IMAGE        COMMAND                  CREATED         STATUS         PORTS                                         NAMES
+1682345a3cc5   api-stages   "sh -c 'uvicorn app.…"   4 seconds ago   Up 4 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   api-stages
+
+$ curl http://localhost:8000/health
+{"status":"ok"}
+
+$ curl -o /dev/null -w "%{http_code}" http://localhost:8000/docs
+200

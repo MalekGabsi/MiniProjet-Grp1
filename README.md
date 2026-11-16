@@ -6,9 +6,9 @@ API REST permettant à une école d'ingénieurs de gérer les stages de ses étu
 
 | Livrable | Emplacement |
 |---|---|
-| 1. Code source | ce dépôt GitHub : `https://github.com/<compte>/api-gestion-stages` |
+| 1. Code source | ce dépôt GitHub : https://github.com/MalekGabsi/MiniProjet-Grp1 |
 | 2. Dockerfile | [`Dockerfile`](Dockerfile) |
-| 3. URL publique | `https://<nom-du-service>.onrender.com` — Swagger : `/docs` |
+| 3. URL publique | https://api-gestion-stages.onrender.com — Swagger : https://api-gestion-stages.onrender.com/docs |
 | 4. Documentation des endpoints | section [Endpoints](#endpoints) ci-dessous |
 | 5. Captures d'écran | dossier [`docs/captures/`](docs/captures/) |
 
@@ -70,7 +70,7 @@ Client (navigateur / Postman / Swagger)
 
 ## Endpoints
 
-URL de base : `http://localhost:8000` en local, ou `https://<nom-du-service>.onrender.com` dans le cloud.
+URL de base : `http://localhost:8000` en local, ou `https://api-gestion-stages.onrender.com` dans le cloud.
 
 | Méthode | URI | Description | Succès | Erreurs |
 |---|---|---|---|---|
@@ -182,32 +182,32 @@ Le `Dockerfile` part d'une image `python:3.12-slim`. Il installe d'abord les dé
    - *Instance type* : **Free**
    - *Health Check Path* (Advanced) : `/health`
 5. **Create Web Service** : Render construit l'image à partir du `Dockerfile`, puis la déploie.
-6. Récupérer l'URL publique, de la forme `https://api-gestion-stages-xxxx.onrender.com`.
+6. Récupérer l'URL publique, de la forme `https://api-gestion-stages.onrender.com`.
 7. Tester :
    - navigateur : `https://.../docs`
    - Postman : remplacer `baseUrl` par l'URL Render
-   - terminal : `./test_remote.sh https://api-gestion-stages-xxxx.onrender.com`
+   - terminal : `./test_remote.sh https://api-gestion-stages.onrender.com`
 
 > Autre méthode : **New + → Blueprint**, puis choisir le dépôt. Render lit `render.yaml` et crée le service tout seul.
 
 **Limites du plan gratuit** : le service se met en veille après environ 15 min d'inactivité, et la première requête suivante prend 30 à 60 s. La base SQLite est stockée dans le conteneur : elle est **réinitialisée à chaque redémarrage ou redéploiement**. En production, on utiliserait une base managée (PostgreSQL) ou un disque persistant.
 
-## 7. Captures d'écran à fournir (`docs/captures/`)
+## 7. Captures d'écran (`docs/captures/`)
 
-| # | Fichier conseillé | Contenu |
+Tests réalisés avec Swagger sur l'URL publique Render.
+
+| # | Fichier | Contenu |
 |---|---|---|
-| 1 | `01-swagger-local.png` | Swagger UI listant les endpoints |
-| 2 | `02-post-201.png` | Création d'un stage (201) |
-| 3 | `03-get-liste.png` | Liste des stages |
-| 4 | `04-put-200.png` | Modification d'un stage |
-| 5 | `05-delete-204.png` | Suppression |
-| 6 | `06-get-404.png` | Stage inexistant (404) |
-| 7 | `07-docker-build.png` | `docker build` réussi |
-| 8 | `08-docker-ps.png` | `docker ps` avec le conteneur, et `curl /health` |
-| 9 | `09-github.png` | Dépôt GitHub |
-| 10 | `10-render-deploy.png` | Logs Render « Your service is live » |
-| 11 | `11-render-swagger.png` | Swagger ouvert depuis l'URL publique `onrender.com` |
-| 12 | `12-postman-runner.png` | Postman Runner avec tous les tests en vert sur l'URL Render |
+| 1 | `01-swagger-render.jpg` | Swagger UI sur `api-gestion-stages.onrender.com` : liste des endpoints |
+| 2 | `02-post-201.jpg` | Création d'un stage → **201 Created** |
+| 3 | `03-get-liste-200.jpg` | Liste des stages → **200 OK** |
+| 4 | `04-put-200.jpg` | Modification du stage 2 → **200 OK** |
+| 5 | `05-delete-204.jpg` | Suppression du stage 3 → **204 No Content** |
+| 6 | `06-get-inexistant-404.jpg` | Consultation d'un stage supprimé → **404** « Stage introuvable » |
+| 7 | `10-render-service-live.jpg` | Service Render : Docker, plan Free, statut **Live**, dépôt GitHub relié |
+| 8 | `11-render-logs.jpg` | Logs Render (vérifications `/health` → 200) |
+
+Partie Docker : la sortie réelle des commandes `docker build`, `docker run`, `docker ps` et `curl` est dans `07-08-docker-terminal.txt`. Captures encore à ajouter par l'équipe : terminal Docker (`07-docker.png`) et page du dépôt GitHub (`09-github.png`).
 
 ## 8. Sécurité et pistes d'amélioration
 
